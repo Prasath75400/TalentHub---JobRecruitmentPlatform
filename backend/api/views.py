@@ -14,3 +14,16 @@ class RegisterApi(generics.CreateAPIView):
         serializer.save()
 
         return Response({"message": "User registered successfully"},status=status.HTTP_201_CREATED)
+    
+
+class LoginApi(generics.CreateAPIView):
+    serializer_class=LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializers=self.get_serializer(data=request.data)
+        serializers.is_valid(raise_exception=True)
+
+        return Response(
+            serializers.validated_data,
+            status=status.HTTP_200_OK
+        )   
