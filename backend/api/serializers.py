@@ -46,7 +46,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('confirm_password')
         user=User.objects.create(
-          username=validated_data['username'],  
+          username=validated_data['username'],
           email=validated_data['email'],
          
           role=validated_data['role']
@@ -81,3 +81,32 @@ class LoginSerializer(serializers.Serializer):
             "access": str(refresh.access_token)
         }
     
+class CompanySerializer(serializers.ModelSerializer):
+     class Meta:
+         model=Company
+         fields='__all__' 
+
+     def validate_website(self,value): 
+          if not value.startswith(("http://", "https://")):
+            raise serializers.ValidationError(
+                "Website must start with http:// or https://"
+            )
+
+          return value   
+     
+     def validate_employee_count(self,value):
+         if value < 0:
+             raise serializers.ValidationError("Employee count cannot be negative")
+         return value
+     
+    
+     
+     def update(self, instance, validated_data):
+         instance.name=validated_data.get('name',instance.name)
+         instance.location=validated_data.get('location',instance.location)
+         instance.industry=validated_data.get('industry',instance.industry)
+         instance.website=validated_data.get('website',instance.website)
+         instance.employee_count=validated_data.get('employee_count',instance.employee_count)
+         
+         instance.save()
+         return instance
