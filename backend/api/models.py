@@ -7,7 +7,7 @@ class User(AbstractUser):
     ROLL_CHOICES=(
         ('CANDIDATE','Candidate'),
         ('RECURITER','Recuriter'),
-        ('Admin','Admin')
+        ('ADMIN','Admin')
     )
     role=models.CharField(max_length=20,choices=ROLL_CHOICES,default='ADMIN')
     email=models.EmailField(unique=True)

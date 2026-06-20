@@ -64,7 +64,7 @@ class LoginSerializer(serializers.Serializer):
         password=attrs.get('password')
 
         user=authenticate(
-            email=email,
+            username=email,
             password=password
         )
         if not user:

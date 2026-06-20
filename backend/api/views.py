@@ -32,10 +32,11 @@ class LoginApi(generics.CreateAPIView):
             status=status.HTTP_200_OK
         )
 class CompanyCreateListView(generics.ListCreateAPIView):
-    queryset=Company.objects.all().order_by('-created_at')
+    queryset=Company.objects.all()
     serializer_class=CompanySerializer
     pagination_class=CompanyPagination
     permission_classes=[IsAuthenticated]
+    
     def create(self, request, *args, **kwargs):
         if request.user.role!='ADMIN':
              return Response(
