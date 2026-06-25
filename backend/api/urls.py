@@ -6,5 +6,7 @@ urlpatterns=[
     path('register/',RegisterApi.as_view(),name='register'),
     path('login/',LoginApi.as_view(),name='login'),
     path('company/',CompanyCreateListView.as_view()),
-    path('company/<int:pk>/',CompanyUpdateView.as_view())
+    path('company/<int:pk>/',CompanyUpdateView.as_view()),
+    path('candiate/',CandiateCreateListApi.as_view()),
+    path('job/',jobListCreateApi.as_view())
 ]

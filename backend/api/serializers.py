@@ -110,3 +110,55 @@ class CompanySerializer(serializers.ModelSerializer):
          
          instance.save()
          return instance
+     
+class CandiateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Candidate
+        fields='__all__'
+
+    def  validate(self, attrs):
+        if attrs.get('expected_salary') < attrs.get('current_salary'):
+                 raise serializers.ValidationError('Expected salary cannot be lower than current salary.')
+        return attrs
+    
+
+    def validate_resume(self, value):
+
+        allowed_extensions = [
+            '.pdf',
+            '.doc',
+            '.docx'
+        ]
+
+        file_name = value.name.lower()
+
+        if not any(
+            file_name.endswith(ext)
+            for ext in allowed_extensions
+        ):
+            raise serializers.ValidationError(
+                "Only PDF, DOC and DOCX files are allowed."
+            )
+
+        return value
+    
+
+class JobSerializer(serializers.ModelSerializer):
+    company_details=CompanySerializer(read_only=True)
+    
+    class Meta:
+        model=Job
+        fields='__all__'   
+
+            
+    def validate_salary(self,value):
+        if value < 0:
+            raise serializers.ValidationError('salary should be lesser than 0')
+        return value
+    
+    
+           
+    def validate_vacancies(self,value):
+        if value < 0:
+            raise serializers.ValidationError('vacancies should be less zero')
+        return value
